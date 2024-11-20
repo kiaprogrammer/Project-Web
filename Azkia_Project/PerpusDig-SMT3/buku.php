@@ -105,6 +105,11 @@
             outline: none;
             box-shadow: none;
         }
+        
+        ul li.active {
+            background-color: #ddd; /* Gaya latar belakang untuk item aktif */
+            color: #000; /* Warna teks untuk item aktif */
+        }
 
         .content {
             flex: 1;
@@ -117,7 +122,7 @@
         .content h2 {
             background-color: #007bff;
             color: white;
-            padding: 20px;
+            padding: 10px;
             border-radius: 0px;
             margin-bottom: 0px;
         }
@@ -498,6 +503,21 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Ambil URL saat ini
+        var currentUrl = window.location.pathname.split('/').pop();
+
+        // Tambahkan kelas 'active' pada elemen <li> yang sesuai
+        $('ul li a').each(function() {
+            var href = $(this).attr('href');
+            if (href === currentUrl) {
+                $(this).parent().addClass('active');
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>
