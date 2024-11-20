@@ -1,164 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PerpusDig</title>
+    <title>Tambah Data</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f0f0f0;
-            }
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
 
-            header {
-                background-color: #1976d2;
-                color: white;
-                padding: 10px 20px;
-                display: flex;
-                align-items: center;
-            }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+        }
 
-            header .logo img {
-                height: 40px;
-                margin-right: 10px;
-            }
+        .header img {
+            width: 40px;
+            margin-right: 10px;
+        }
 
-            header h1 {
-                font-size: 18px;
-            }
+        .header h1 {
+            font-size: 18px;
+            margin: 0;
+        }
 
-            .container {
-                display: flex;
-            }
+        .container {
+            display: flex;
+            padding: 20px;
+        }
 
-            aside {
-                width: 200px;
-                background-color: #fff;
-                border-right: 1px solid #ddd;
-                padding: 20px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
 
-            aside .profile {
-                text-align: center;
-                margin-bottom: 20px;
-            }
+        .sidebar img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: 0 auto;
+        }
 
-            aside .profile img {
-                width: 80px;
-                height: 80px;
-                border-radius: 50%;
-                display: block;
-                margin: 0 auto;
-            }
+        .sidebar h3 {
+            text-align: center;
+            margin: 10px 0;
+        }
 
-            aside .profile p {
-                margin: 10px 0 5px;
-                font-weight: bold;
-            }
+        .sidebar p {
+            text-align: center;
+            background-color: #A8CFFB;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: inline-block;
+            margin: 0 auto;
+        }
 
-            aside .profile span {
-                display: inline-block;
-                background-color: #e0e0e0;
-                padding: 2px 6px;
-                border-radius: 12px;
-                font-size: 12px;
-            }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            flex-grow: 1;
+            margin-top: 20px;
+        }
 
-            aside nav ul {
-                list-style: none;
-                padding: 0;
-            }
+        .sidebar ul li {
+            padding: 10px;
+            margin: 15px 0;
+            background-color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-            aside nav ul li {
-                margin: 10px 0;
-            }
+        .sidebar ul li:hover {
+            background-color: rgba(168, 207, 251, 0.6);
+            border-radius: 20px;
+        }
 
-            aside nav ul li a {
-                color: #333;
-                text-decoration: none;
-                display: block;
-                padding: 8px 12px;
-                border-radius: 4px;
-            }
+        .sidebar ul li i {
+            margin-right: 10px;
+        }
 
-            aside nav ul li a.active,
-            aside nav ul li a:hover {
-                background-color: #1976d2;
-                color: white;
-            }
+        .sidebar ul li a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-            main {
-                flex-grow: 1;
-                padding: 20px;
-                background-color: #fff;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                margin: 20px;
-            }
+        .breadcrumb {
+            font-size: 14px;
+            margin-bottom: 10px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            margin-top: 0px;
+            border-radius: 5px;
+        }
 
-            .breadcrumb {
-                margin-bottom: 10px;
-            }
+        .breadcrumb a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-            .breadcrumb a {
-                color: #1976d2;
-                text-decoration: none;
-            }
+        .breadcrumb a:focus,
+        .breadcrumb a:active,
+        .breadcrumb a:visited {
+            color: inherit;
+            outline: none;
+        }
 
-            .breadcrumb span {
-                color: #777;
-            }
+        .content {
+            flex: 1;
+            margin-left: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
+        h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .btn-upload {
+            padding: 10px 30px;
+            background-color: white;
+            color: black; /* Warna font hitam */
+            border: 1px solid #007bff; /* Border halus dengan warna biru */
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px; /* Border halus */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-upload i {
+            font-size: 18px; /* Ukuran ikon lebih besar */
+        }
+
+        .btn-upload:hover {
+            color: white; /* Warna font putih saat hover */
+            background-color: #007bff; /* Background biru saat hover */
+        }
+
+        .form-group label {
+            flex: 1;
+            font-weight: bold;
+        }
+
+        .form-group2 {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            flex: 2;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .form-group3 {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .upload-preview {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .upload-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .form-group4 {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .upload-preview button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .upload-preview button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group .char-counter {
+            font-size: 12px;
+            color: #666;
+            text-align: right;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-actions .btn-cancel {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        .form-actions .btn-cancel:hover {
+            background-color: #b3b3b3;
+        }
+
+        .form-actions .btn-save {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .form-actions .btn-save:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
+
 <body>
-    <header>
-        <div class="logo">
-            <img src="assets/logo perpusdig.png" alt="Logo">
-            <h1>PerpusDig - Sistem Informasi Perpustakaan Daerah Kabupaten Nganjuk</h1>
-        </div>
-    </header>
+    <div class="header">
+        <img alt="Library logo" src="assets/logo perpusdig.png" />
+        <h1>&#124; PerpusDig - Sistem Informasi Perpustakaan Daerah Kabupaten Nganjuk</h1>
+    </div>
+
     <div class="container">
-        <aside>
-            <div class="profile">
-                <img src="assets/profil.png alt="Profil">
-                <p>Ini Bapak Budi</p>
-                <span>Super Admin</span>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="active">Beranda</a></li>
-                    <li><a href="#">E - Book</a></li>
-                    <li><a href="#">Buku</a></li>
-                    <li><a href="#">Data Anggota</a></li>
-                    <li><a href="#">Data Admin</a></li>
-                    <li><a href="#">Pengajuan Peminjaman</a></li>
-                    <li><a href="#">Riwayat Peminjaman</a></li>
-                </ul>
-            </nav>
-        </aside>
-        <main>
-            <div class="breadcrumb">
-                <a href="#">Beranda</a> / <a href="#">Data E - Book</a> / <span>Tambah Data</span>
-            </div>
+        <div class="sidebar">
+            <img alt="User profile picture" src="assets/profil.png" />
+            <h3>Ini Bapak Budi</h3>
+            <p>Super Admin</p>
+            <ul>
+                <li id="dashboard"><a href="dashboard_super.php"><i class="fas fa-home"></i>Beranda</a></li>
+                <li id="ebook"><a href="Ebook.php"><i class="fas fa-book"></i>E - Book</a></li>
+                <li id="buku"><a href="Buku.php"><i class="fas fa-book-open"></i>Buku</a></li>
+                <li id="data_anggota"><a href="data_anggota.php"><i class="fas fa-users"></i>Data Anggota</a></li>
+                <li id="data_admin"><a href="data_admin.php"><i class="fas fa-user-shield"></i>Data Admin</a></li>
+                <li id="pengajuan"><i class="fas fa-file-alt"></i>Pengajuan Peminjaman</li>
+                <li id="riwayat"><i class="fas fa-history"></i>Riwayat Peminjaman</li>
+            </ul>
+        </div>
+
+        <div class="content">
+        <div class="breadcrumb">
             <h2>Tambah Data</h2>
-            <!-- Content for Tambah Data goes here -->
-        </main>
+            <a href="dashboard_super.php">Beranda</a> / <a href="buku.php">Data Buku</a> / Tambah Data E-Book
+        </div>
+            <form>
+                <div class="form-group">
+                    <button type="button" class="btn-upload"><i class="fas fa-upload"></i> Unggah E-Book</button>
+                </div>
+
+                <div class="form-group2">
+                    <label for="judul">Judul</label>
+                    <input type="text" id="judul" placeholder="Masukkan Judul Buku">
+                    <label for="kategori">Kategori</label>
+                    <select id="kategori">
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        <option value="fiksi">Fiksi</option>
+                        <option value="non-fiksi">Non-Fiksi</option>
+                        <option value="pendidikan">Pendidikan</option>
+                    </select>
+                </div>
+
+                <div class="form-group3">
+                    <label for="penulis">Penulis</label>
+                    <input type="text" id="penulis" placeholder="Masukkan Nama Penulis">
+                    <div class="upload-preview">
+                        <img id="preview-img" src="https://via.placeholder.com/150" alt="Preview Sampul">
+                        <button type="button" id="upload-cover">Unggah Sampul</button>
+                        <input type="file" id="cover-file" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group4">
+                    <label for="deskripsi">Deskripsi</label>
+                    <textarea id="deskripsi" placeholder="Masukkan Deskripsi Buku"></textarea>
+                    <div class="char-counter" id="char-counter">0/1000</div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        var navLinks = document.querySelectorAll('aside nav ul li a');
-        navLinks.forEach(function (link) {
-            link.addEventListener('click', function () {
-                navLinks.forEach(function (link) {
-                    link.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
+        const deskripsi = document.getElementById('deskripsi');
+        const charCounter = document.getElementById('char-counter');
+        const coverFile = document.getElementById('cover-file');
+        const previewImg = document.getElementById('preview-img');
+        const uploadCover = document.getElementById('upload-cover');
+
+        // Update char counter
+        deskripsi.addEventListener('input', () => {
+            charCounter.textContent = `${deskripsi.value.length}/1000`;
         });
-    });
+
+        // Preview cover image
+        uploadCover.addEventListener('click', () => {
+            coverFile.click();
+        });
+
+        coverFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 </body>
 </html>
