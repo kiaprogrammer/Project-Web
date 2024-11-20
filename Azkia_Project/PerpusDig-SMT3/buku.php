@@ -386,7 +386,6 @@
                 <div class="top-container">
                     <!-- Tombol Tambah Data di kiri -->
                     <button class="btn-tambah"><i class="fas fa-plus"></i> TAMBAH DATA</button>
-
                     <!-- Kolom Pencarian di Kanan -->
                     <div class="search-container">
                         <button><i class="fas fa-search search-icon"></i></button>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Data</title>
+    <title>Tambah Data E - Book</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -137,12 +137,21 @@
             margin-bottom: 20px;
         }
 
-        .form-group {
+        /* Container untuk menempatkan tombol di baris atas */
+        .top-form-container {
             display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            margin-bottom: 20px; /* Tambahkan jarak di bawah container */
         }
 
+        .file-info {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Gaya untuk tombol unggah */
         .btn-upload {
             padding: 10px 30px;
             background-color: white;
@@ -155,6 +164,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none; /* Hapus underline jika ada */
         }
 
         .btn-upload i {
@@ -166,32 +176,106 @@
             background-color: #007bff; /* Background biru saat hover */
         }
 
-        .form-group label {
+        /* Container utama untuk konten form */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-form-content {
+            display: flex;
+            justify-content: space-between; /* Menempatkan grup kiri dan kanan dalam satu baris */
+            gap: 20px; /* Memberikan jarak antara kolom kiri dan kanan */
+        }
+
+        /* Container untuk grup form kiri */
+        .form-group-left, .form-group-right {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Menambahkan jarak antara elemen */
+        }
+
+        /* Styling untuk layout dua kolom */
+        .form-terbit {
+            display: flex;
+            justify-content: space-between; /* Buat ruang di antara dua kolom */
+            gap: 20px; /* Berikan ruang di antara dua kolom */
+            margin-bottom: 20px; /* Tambahkan ruang di bawah grup */
+        }
+
+        /* Styling untuk bidang formulir individual */
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            width: 48%; /* Tetapkan lebar kolom */
+        }
+
+        .form-field label {
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
-        .form-group2 {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            flex: 2;
+        .form-field input {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 100%;
+            box-sizing: border-box; /* Memastikan padding termasuk dalam total lebar dan tinggi */
         }
 
-        .form-group3 {
+        /* Styling untuk deskripsi group */
+        .from-deskripsi {
             display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
+            flex-direction: column;
+            gap: 15px; /* Tambahkan ruang antara elemen */
+            margin-bottom: 20px; /* Tambahkan ruang di bawah grup */
+        }
+
+        .from-deskripsi label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .from-deskripsi textarea {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box; /* Memastikan padding termasuk dalam total lebar dan tinggi */
+            resize: vertical; /* Mengizinkan pengubahan ukuran vertikal */
+            height: 150px; /* Menetapkan tinggi default */
+        }
+
+        .char-counter {
+            font-size: 12px;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .form-group-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
         }
 
         textarea {
@@ -200,7 +284,6 @@
         }
 
         .upload-preview {
-            flex: 1.5;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -214,12 +297,6 @@
             border: 1px solid #ccc;
             border-radius: 10px;
             object-fit: cover;
-        }
-
-        .form-group4 {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
         }
 
         .upload-preview button {
@@ -281,7 +358,6 @@
         <img alt="Library logo" src="assets/logo perpusdig.png" />
         <h1>&#124; PerpusDig - Sistem Informasi Perpustakaan Daerah Kabupaten Nganjuk</h1>
     </div>
-
     <div class="container">
         <div class="sidebar">
             <img alt="User profile picture" src="assets/profil.png" />
@@ -297,79 +373,148 @@
                 <li id="riwayat"><i class="fas fa-history"></i>Riwayat Peminjaman</li>
             </ul>
         </div>
-
         <div class="content">
-        <div class="breadcrumb">
-            <h2>Tambah Data</h2>
-            <a href="dashboard_super.php">Beranda</a> / <a href="buku.php">Data Buku</a> / Tambah Data E-Book
-        </div>
+            <div class="breadcrumb">
+                <h2>Tambah Data</h2>
+                <a href="dashboard_super.php">Beranda</a> / <a href="buku.php">Data Buku</a> / Tambah Data E-Book
+            </div>
             <form>
-                <div class="form-group">
-                    <button type="button" class="btn-upload"><i class="fas fa-upload"></i> Unggah E-Book</button>
-                </div>
-
-                <div class="form-group2">
-                    <label for="judul">Judul</label>
-                    <input type="text" id="judul" placeholder="Masukkan Judul Buku">
-                    <label for="kategori">Kategori</label>
-                    <select id="kategori">
-                        <option value="" disabled selected>Pilih Kategori</option>
-                        <option value="fiksi">Fiksi</option>
-                        <option value="non-fiksi">Non-Fiksi</option>
-                        <option value="pendidikan">Pendidikan</option>
-                    </select>
-                </div>
-
-                <div class="form-group3">
-                    <label for="penulis">Penulis</label>
-                    <input type="text" id="penulis" placeholder="Masukkan Nama Penulis">
-                    <div class="upload-preview">
-                        <img id="preview-img" src="https://via.placeholder.com/150" alt="Preview Sampul">
-                        <button type="button" id="upload-cover">Unggah Sampul</button>
-                        <input type="file" id="cover-file" accept="image/*" style="display: none;">
+                <div class="form-container">
+                    <div class="top-form-container">
+                        <label for="file-upload" class="btn-upload"><i class="fas fa-upload"></i> Unggah E-Book</label>
+                        <input type="file" id="file-upload" style="display: none;">
+                        <div id="file-info" class="file-info">
+                            <span id="file-name">No file selected</span> |
+                            <span id="file-size">0 KB</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group4">
-                    <label for="deskripsi">Deskripsi</label>
-                    <textarea id="deskripsi" placeholder="Masukkan Deskripsi Buku"></textarea>
-                    <div class="char-counter" id="char-counter">0/1000</div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel">Batal</button>
-                    <button type="submit" class="btn-save">Simpan</button>
+                    <div class="main-form-content">
+                        <div class="form-group-left">
+                            <label for="judul">Judul</label>
+                            <input type="text" id="judul" placeholder="Masukkan Judul Buku">
+                            <label for="pengarang">Pengarang</label>
+                            <input type="text" id="pengarang" placeholder="Masukkan Nama Pengarang">
+                            <div class="form-terbit">
+                                <div class="form-field">
+                                    <label for="penerbit">Penerbit</label>
+                                    <input type="text" id="penerbit" placeholder="Nama Penerbit">
+                                </div>
+                                <div class="form-field">
+                                    <label for="tahun">Tahun Terbit</label>
+                                    <input type="text" id="tahun" placeholder="Tahun Terbit" pattern="\d{4}" title="Masukkan tahun dalam format 4 digit, misalnya: 2023">
+                                </div>
+                            </div>
+                            <div class="from-deskripsi">
+                                <label for="sinopsis">Deskripsi E - Book</label>
+                                <textarea id="sinopsis" placeholder="Masukkan deskripsi E - Book"></textarea>
+                                <div class="char-counter" id="char-counter">0/500</div>
+                            </div>
+                        </div>
+                        <div class="form-group-right">
+                            <label for="kategori">Kategori</label>
+                            <select id="kategori">
+                                <option value="kategori1">Kategori 1</option>
+                                <option value="kategori2">Kategori 2</option>
+                                <option value="kategori3">Kategori 3</option>
+                            </select>
+                            <label for="cover">Unggah Cover Buku</label>
+                            <div class="upload-preview">
+                                <img id="preview-img" src="https://via.placeholder.com/150" alt="Preview Sampul" style="max-width: 100%; height: auto;">
+                                <button type="button" id="upload-cover">Unggah Sampul</button>
+                                <input type="file" id="cover-file" accept="image/*" style="display: none;">
+                                <div id="cover-info" class="cover-info">
+                                    <span id="cover-name">No cover selected</span> |
+                                    <span id="cover-size">0 KB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Batal</button>
+                        <button type="submit" class="btn-save">Simpan</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
     <script>
-        const deskripsi = document.getElementById('deskripsi');
+        const sinopsis = document.getElementById('sinopsis');
         const charCounter = document.getElementById('char-counter');
         const coverFile = document.getElementById('cover-file');
         const previewImg = document.getElementById('preview-img');
         const uploadCover = document.getElementById('upload-cover');
+        const fileUpload = document.getElementById('file-upload');
+        const fileName = document.getElementById('file-name');
+        const fileSize = document.getElementById('file-size');
+        const coverName = document.getElementById('cover-name');
+        const coverSize = document.getElementById('cover-size');
 
-        // Update char counter
-        deskripsi.addEventListener('input', () => {
-            charCounter.textContent = `${deskripsi.value.length}/1000`;
+        // Set the max file size to 1 GB
+        const maxFileSize = 1073741824; // 1 GB in bytes
+
+        // Update char counter for Deskripsi
+        sinopsis.addEventListener('input', () => {
+            const charCount = sinopsis.value.length;
+            charCounter.textContent = `${charCount}/500`; // Update the counter
         });
 
         // Preview cover image
         uploadCover.addEventListener('click', () => {
-            coverFile.click();
+            coverFile.click(); // Trigger the file input click
         });
 
         coverFile.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewImg.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+                // Check file size
+                if (file.size > maxFileSize) {
+                    alert("Ukuran file terlalu besar. Maksimal 1 GB.");
+                    // Reset file input
+                    coverFile.value = '';
+                    coverName.textContent = 'No cover selected';
+                    coverSize.textContent = '0 KB';
+                    previewImg.src = ''; // Clear preview image
+                } else {
+                    // Display file name and size
+                    coverName.textContent = file.name; // Display file name
+                    coverSize.textContent = (file.size / 1024).toFixed(2) + ' KB'; // Display file size in KB
+
+                    // If the file is an image, show preview
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewImg.src = e.target.result; // Set preview image to the uploaded file
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                coverName.textContent = 'No cover selected';
+                coverSize.textContent = '0 KB';
+                previewImg.src = ''; // Clear preview image
+            }
+        });
+
+        // File Upload for E-Book
+        fileUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // Check file size
+                if (file.size > maxFileSize) {
+                    alert("Ukuran file terlalu besar. Maksimal 1 GB.");
+                    // Reset file input
+                    fileUpload.value = '';
+                    fileName.textContent = 'No file selected';
+                    fileSize.textContent = '0 KB';
+                } else {
+                    // Display file name and size
+                    fileName.textContent = file.name; // Display file name
+                    fileSize.textContent = (file.size / 1024).toFixed(2) + ' KB'; // Display file size in KB
+                }
+            } else {
+                fileName.textContent = 'No file selected';
+                fileSize.textContent = '0 KB';
             }
         });
     </script>
 </body>
+
 </html>

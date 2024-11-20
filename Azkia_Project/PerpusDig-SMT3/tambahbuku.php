@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Data</title>
+    <title>Tambah Data Buku</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="header.css" rel="stylesheet" />
     <link href="sidebar.css" rel="stylesheet" />
@@ -239,34 +239,34 @@
 <body>
     <!-- Include Header -->
     <div class="header">
-      <img alt="Library logo" src="assets/logo perpusdig.png" />
-      <h1>&#124; PerpusDig - Sistem Informasi Perpustakaan Daerah Kabupaten Nganjuk</h1>
+        <img alt="Library logo" src="assets/logo perpusdig.png" />
+        <h1>&#124; PerpusDig - Sistem Informasi Perpustakaan Daerah Kabupaten Nganjuk</h1>
     </div>
 
     <div class="container">
         <!-- Include Sidebar -->
         <div class="sidebar">
-          <img alt="User profile picture" src="assets/profil.png" />
-          <h3>Ini Bapak Budi</h3>
-          <p>Super Admin</p>
-          <ul>
-              <li id="dashboard"><a href="dashboard_super.php"><i class="fas fa-home"></i>Beranda</a></li>
-              <li id="ebook"><a href="Ebook.php"><i class="fas fa-book"></i>E - Book</a></li>
-              <li id="buku"><a href="Buku.php"><i class="fas fa-book-open"></i>Buku</a></li>
-              <li id="data_anggota"><a href="data_anggota.php"><i class="fas fa-users"></i>Data Anggota</a></li>
-              <li id="data_admin"><a href="data_admin.php"><i class="fas fa-user-shield"></i>Data Admin</a></li>
-              <li id="pengajuan"><i class="fas fa-file-alt"></i>Pengajuan Peminjaman</li>
-              <li id="riwayat"><i class="fas fa-history"></i>Riwayat Peminjaman</li>
-          </ul>
-      </div>
+        <img alt="User profile picture" src="assets/profil.png" />
+        <h3>Ini Bapak Budi</h3>
+        <p>Super Admin</p>
+            <ul>
+                <li id="dashboard"><a href="dashboard_super.php"><i class="fas fa-home"></i>Beranda</a></li>
+                <li id="ebook"><a href="Ebook.php"><i class="fas fa-book"></i>E - Book</a></li>
+                <li id="buku"><a href="Buku.php"><i class="fas fa-book-open"></i>Buku</a></li>
+                <li id="data_anggota"><a href="data_anggota.php"><i class="fas fa-users"></i>Data Anggota</a></li>
+                <li id="data_admin"><a href="data_admin.php"><i class="fas fa-user-shield"></i>Data Admin</a></li>
+                <li id="pengajuan"><i class="fas fa-file-alt"></i>Pengajuan Peminjaman</li>
+                <li id="riwayat"><i class="fas fa-history"></i>Riwayat Peminjaman</li>
+            </ul>
+        </div>
 
         <div class="content">
             <!-- Include Breadcrumb -->
             <div class="breadcrumb">
             <h2>Tambah Data</h2>
-            <a href="dashboard_super.php">Beranda</a> / <a href="buku.php">Data Buku</a> / Tambah Data Buku
-        </div>
-            <form>
+                <a href="dashboard_super.php">Beranda</a> / <a href="buku.php">Data Buku</a> / Tambah Data Buku
+            </div>
+                <form>
                 <!-- Baris 1 -->
                 <div class="form-group">
                     <button type="button" class="btn-upload"><i class="fas fa-upload"></i> Unggah E-Book</button>
@@ -308,7 +308,7 @@
                 <!-- Baris 5 -->
                 <div class="form-group">
                     <label for="deskripsi">Deskripsi Buku</label>
-                    <textarea id="deskripsi" maxlength="500" placeholder="Masukkan Deskripsi Buku"></textarea>
+                    <textarea id="deskripsi" maxlength="1000" placeholder="Masukkan Deskripsi Buku"></textarea>
                     <div class="char-counter" id="char-counter">0/1000</div>
                 </div>
 
