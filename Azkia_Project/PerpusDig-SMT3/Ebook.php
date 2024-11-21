@@ -111,8 +111,7 @@
         ul li.active {
         background-color: #ddd; /* Gaya latar belakang untuk item aktif */
         color: #000; /* Warna teks untuk item aktif */
-    }
-
+        }
 
         .content {
             flex: 1;

@@ -103,6 +103,17 @@
             text-decoration: none;
         }
 
+        .sidebar ul li a:focus,
+        .sidebar ul li a:active {
+            outline: none;
+            box-shadow: none;
+        }
+
+        ul li.active {
+        background-color: #ddd; /* Gaya latar belakang untuk item aktif */
+        color: #000; /* Warna teks untuk item aktif */
+        }
+
         .breadcrumb {
             font-size: 14px;
             margin-bottom: 10px;
@@ -320,7 +331,7 @@
             </form>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const deskripsi = document.getElementById('deskripsi');
         const charCounter = document.getElementById('char-counter');
@@ -348,6 +359,18 @@
                 reader.readAsDataURL(file);
             }
         });
+        $(document).ready(function() {
+        // Ambil URL saat ini
+        var currentUrl = window.location.pathname.split('/').pop();
+
+        // Tambahkan kelas 'active' pada elemen <li> yang sesuai
+        $('ul li a').each(function() {
+            var href = $(this).attr('href');
+            if (href === currentUrl) {
+                $(this).parent().addClass('active');
+            }
+        });
+    });
     </script>
 </body>
 

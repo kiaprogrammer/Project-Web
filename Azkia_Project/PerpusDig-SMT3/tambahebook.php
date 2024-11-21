@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Data E - Book</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -101,6 +102,17 @@
             text-decoration: none;
         }
 
+        .sidebar ul li a:focus,
+        .sidebar ul li a:active {
+            outline: none;
+            box-shadow: none;
+        }
+
+        ul li.active {
+        background-color: #ddd; /* Gaya latar belakang untuk item aktif */
+        color: #000; /* Warna teks untuk item aktif */
+        }
+
         .breadcrumb {
             font-size: 14px;
             margin-bottom: 10px;
@@ -140,15 +152,10 @@
         /* Container untuk menempatkan tombol di baris atas */
         .top-form-container {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px; /* Tambahkan jarak di bawah container */
-        }
-
-        .file-info {
-            display: inline-block;
-            margin-left: 10px;
-            font-size: 14px;
-            color: #555;
+            align-items: center; /* Sejajarkan item secara vertikal */
+            gap: 10px; /* Tambahkan jarak antara tombol unggah dan info file */
+            margin-bottom: 10px; /* Tambahkan jarak di bawah container */
+            margin-top: 10px;
         }
 
         /* Gaya untuk tombol unggah */
@@ -176,32 +183,87 @@
             background-color: #007bff; /* Background biru saat hover */
         }
 
+        .file-info {
+            font-size: 14px;
+            color: #555;
+        }
+
         /* Container utama untuk konten form */
         .form-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 10px;
         }
 
+        /* Kontainer utama untuk form */
         .main-form-content {
             display: flex;
             justify-content: space-between; /* Menempatkan grup kiri dan kanan dalam satu baris */
-            gap: 20px; /* Memberikan jarak antara kolom kiri dan kanan */
+            gap: 10px; /* Menambahkan jarak antara kolom kiri dan kanan */
+            padding: 20px;
         }
 
         /* Container untuk grup form kiri */
-        .form-group-left, .form-group-right {
-            flex: 1;
+        .form-group-left {
+            flex: 0 0 60%; /* 70% lebar untuk form kiri */
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Menambahkan jarak antara elemen */
+            gap: 20px; /* Ruang antara elemen dalam grup kiri */
+        }
+
+        /* Container untuk grup form kanan */
+        .form-group-right {
+            flex: 0 0 40%; /* 30% lebar untuk form kanan */
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Ruang antara elemen dalam grup kanan */
+        }
+
+        /* Styling untuk bidang formulir individual */
+        .from-judul {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .from-judul label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .from-judul input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box; /* Memastikan padding termasuk dalam total lebar dan tinggi */
+        }
+
+        /* Styling untuk bidang formulir individual */
+        .from-pengarang {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .from-pengarang label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .from-pengarang input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box; /* Memastikan padding termasuk dalam total lebar dan tinggi */
         }
 
         /* Styling untuk layout dua kolom */
         .form-terbit {
             display: flex;
             justify-content: space-between; /* Buat ruang di antara dua kolom */
-            gap: 20px; /* Berikan ruang di antara dua kolom */
+            gap: 10px; /* Berikan ruang di antara dua kolom */
             margin-bottom: 20px; /* Tambahkan ruang di bawah grup */
         }
 
@@ -230,12 +292,11 @@
         .from-deskripsi {
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Tambahkan ruang antara elemen */
+            gap: 10px; /* Tambahkan ruang antara elemen */
             margin-bottom: 20px; /* Tambahkan ruang di bawah grup */
         }
 
         .from-deskripsi label {
-            margin-bottom: 5px;
             font-weight: bold;
         }
 
@@ -257,49 +318,84 @@
             margin-top: 5px;
         }
 
-        .form-group-right {
-            flex: 1;
+        .from-kategori {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            margin-bottom: 20px; /* Tambahkan ruang di bawah grup */
         }
 
-        .form-group label {
+        .from-kategori label {
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .select-wrapper {
+            position: relative;
             width: 100%;
         }
 
-        textarea {
-            resize: none;
-            height: 100px;
+        .from-kategori select {
+            width: 100%;
+            padding: 10px 20px; /* Memberikan ruang di sisi kanan untuk ikon */
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: white;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg%20xmlns="http://www.w3.org/2000/svg"%20width="24"%20height="24"%20viewBox="0%200%2024%2024"><path%20fill="none"%20stroke="currentColor"%20stroke-width="2"%20d="M6%207l6%206l6-6"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center; /* Posisi ikon di sebelah kanan */
+            background-size: 12px 12px; /* Ukuran ikon */
+        }
+
+        .from-kategori select:focus {
+            border-color: #007bff;
+        }
+
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        /* Style untuk Unggah Cover Buku */
+        .form-group label {
+            font-weight: bold;
         }
 
         .upload-preview {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
             text-align: center;
+            position: relative; /* Menentukan posisi relatif untuk pembungkus */
+        }
+
+        .preview-container {
+            position: relative;
+            width: 80%;
+            max-width: 350px; /* Atur ukuran maksimal untuk container */
         }
 
         .upload-preview img {
-            max-width: 100%;
-            max-height: 200px;
+            width: 100%;
+            max-height: 500px; /* Atur ukuran maksimal untuk gambar */
             border: 1px solid #ccc;
             border-radius: 10px;
             object-fit: cover;
         }
 
         .upload-preview button {
+            position: absolute;
+            bottom: 10px; /* Atur posisi tombol di pojok kanan bawah */
+            left: 50%;
+            transform: translateX(-50%); /* Pusatkan tombol secara horizontal */
             background-color: #007bff;
             color: #ffffff;
             border: none;
@@ -313,15 +409,16 @@
             background-color: #0056b3;
         }
 
-        .form-group .char-counter {
-            font-size: 12px;
-            color: #666;
-            text-align: right;
+        .upload-preview .cover-info {
+            margin-top: 5px; /* Berikan jarak antara cover dan info */
+            font-size: 14px;
+            color: #555;
         }
 
         .form-actions {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;  /* Menempatkan tombol di tengah secara horizontal */
+            align-items: center;
             gap: 10px;
         }
 
@@ -381,7 +478,9 @@
             <form>
                 <div class="form-container">
                     <div class="top-form-container">
-                        <label for="file-upload" class="btn-upload"><i class="fas fa-upload"></i> Unggah E-Book</label>
+                        <label for="file-upload" class="btn-upload">
+                            <i class="fas fa-upload"></i> Unggah E - Book
+                        </label>
                         <input type="file" id="file-upload" style="display: none;">
                         <div id="file-info" class="file-info">
                             <span id="file-name">No file selected</span> |
@@ -390,10 +489,14 @@
                     </div>
                     <div class="main-form-content">
                         <div class="form-group-left">
-                            <label for="judul">Judul</label>
-                            <input type="text" id="judul" placeholder="Masukkan Judul Buku">
-                            <label for="pengarang">Pengarang</label>
-                            <input type="text" id="pengarang" placeholder="Masukkan Nama Pengarang">
+                            <div class="from-judul">
+                                <label for="judul">Judul</label>
+                                <input type="text" id="judul" placeholder="Masukkan Judul Buku">
+                            </div>
+                            <div class="from-pengarang">
+                                <label for="pengarang">Pengarang</label>
+                                <input type="text" id="pengarang" placeholder="Masukkan Nama Pengarang">
+                            </div>
                             <div class="form-terbit">
                                 <div class="form-field">
                                     <label for="penerbit">Penerbit</label>
@@ -411,32 +514,39 @@
                             </div>
                         </div>
                         <div class="form-group-right">
-                            <label for="kategori">Kategori</label>
-                            <select id="kategori">
-                                <option value="kategori1">Kategori 1</option>
-                                <option value="kategori2">Kategori 2</option>
-                                <option value="kategori3">Kategori 3</option>
-                            </select>
-                            <label for="cover">Unggah Cover Buku</label>
+                            <div class="from-kategori">
+                                <label for="kategori">Kategori</label>
+                                <select id="kategori">
+                                    <option value="kategori1">Kategori 1</option>
+                                    <option value="kategori2">Kategori 2</option>
+                                    <option value="kategori3">Kategori 3</option>
+                                </select>
+                            </div>
                             <div class="upload-preview">
-                                <img id="preview-img" src="https://via.placeholder.com/150" alt="Preview Sampul" style="max-width: 100%; height: auto;">
-                                <button type="button" id="upload-cover">Unggah Sampul</button>
-                                <input type="file" id="cover-file" accept="image/*" style="display: none;">
+                                <label for="cover">Unggah Cover E - Book</label>
+                                <div class="preview-container">
+                                    <img id="preview-img" src="https://via.placeholder.com/150" alt="Preview Sampul">
+                                    <button type="button" id="upload-cover">
+                                        <i class="fas fa-upload"></i> Unggah Sampul
+                                    </button>
+                                </div>
                                 <div id="cover-info" class="cover-info">
                                     <span id="cover-name">No cover selected</span> |
                                     <span id="cover-size">0 KB</span>
                                 </div>
+                                <input type="file" id="cover-file" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-cancel">Batal</button>
+                                <button type="submit" class="btn-save">Simpan</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-cancel">Batal</button>
-                        <button type="submit" class="btn-save">Simpan</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const sinopsis = document.getElementById('sinopsis');
         const charCounter = document.getElementById('char-counter');
@@ -514,6 +624,18 @@
                 fileSize.textContent = '0 KB';
             }
         });
+        $(document).ready(function() {
+        // Ambil URL saat ini
+        var currentUrl = window.location.pathname.split('/').pop();
+
+        // Tambahkan kelas 'active' pada elemen <li> yang sesuai
+        $('ul li a').each(function() {
+            var href = $(this).attr('href');
+            if (href === currentUrl) {
+                $(this).parent().addClass('active');
+            }
+        });
+    });
     </script>
 </body>
 
