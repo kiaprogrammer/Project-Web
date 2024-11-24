@@ -1,3 +1,8 @@
+<?php
+require_once 'koneksi2.php';
+$db = new Database  ();
+$koneksi = $db->koneksi; // Inisialisasi koneksi dari objek Database
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -105,10 +110,10 @@
             outline: none;
             box-shadow: none;
         }
-        
+
         ul li.active {
-            background-color: #ddd; /* Gaya latar belakang untuk item aktif */
-            color: #000; /* Warna teks untuk item aktif */
+        background-color: #ddd; /* Gaya latar belakang untuk item aktif */
+        color: #000; /* Warna teks untuk item aktif */
         }
 
         .content {
@@ -405,84 +410,45 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1234566</td>
-                            <td>Laut Bercerita</td>
-                            <td>Leila S. Chudori2017</td>
-                            <td>Fiksi</td>
-                            <td>5</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
+                        <?php
+                        $no = 1;
+                        $query = $koneksi->prepare("SELECT isbn, judul_buku, penulis_buku, kategori_buku, jumlah_buku FROM buku");
+                        $query->execute();
+                        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($result as $row) { // Iterasi melalui hasil query
+                            echo "<tr>
+                            <td>{$no}</td>
+                            <td>{$row['isbn']}</td>
+                            <td>{$row['judul_buku']}</td>
+                            <td>{$row['penulis_buku']}</td>
+                            <td>{$row['kategori_buku']}</td>
+                            <td>{$row['jumlah_buku']}</td>
+                            <td style='text-align: center;'>
+                                <!-- Form untuk lihat data -->
+                                <form method='POST' action='lihatbuku.php' style='display:inline;'>
+                                    <input type='hidden' name='judul' value='{$row['judul_buku']}' />
+                                    <button type='submit' class='action-btn'>
+                                        <i class='fas fa-eye'></i>
+                                    </button>
+                                </form>
+                                <!-- Form untuk hapus data -->
+                                <form method='POST' action='hapus_ebook.php' style='display:inline;'>
+                                    <input type='hidden' name='judul' value='{$row['judul_buku']}' />
+                                    <button type='submit' class='action-btn' onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>
+                                        <i class='fas fa-trash-alt'></i>
+                                    </button>
+                                </form>
+                                <!-- Form untuk edit data -->
+                                <form method='POST' action='tambahbuku.php' style='display:inline;'>
+                                    <input type='hidden' name='judul' value='{$row['judul_buku']}' />
+                                    <button type='submit' class='action-btn'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                </form>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>1234577</td>
-                            <td>Resign</td>
-                            <td>Almira Bastari</td>
-                            <td>Fiksi</td>
-                            <td>6</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>1234599</td>
-                            <td>Filosofi Teras</td>
-                            <td>Henry Manurung</td>
-                            <td>Filsafat</td>
-                            <td>8</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>1234580</td>
-                            <td>Serangkai</td>
-                            <td>Valerie Patkar</td>
-                            <td>Romance</td>
-                            <td>10</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>1234545</td>
-                            <td>Orang Gagal</td>
-                            <td>2020</td>
-                            <td>Osamu Dazai</td>
-                            <td>8</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>1234511</td>
-                            <td>Kupikir Segalanya Akan Beres...</td>
-                            <td>Kim Haemam & Park</td>
-                            <td>Self-Improvement</td>
-                            <td>6</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        </tr>";
+                            $no++; // Increment nomor
+                        }?>
                     </tbody>
                 </table>
                 <div class="pagination">

@@ -1,3 +1,8 @@
+<?php
+require_once 'koneksi2.php';
+$db = new Database  ();
+$koneksi = $db->koneksi; // Inisialisasi koneksi dari objek Database
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +40,6 @@
 
         .container {
             display: flex;
-            min-height: 100vh;
         }
 
         .sidebar {
@@ -96,7 +100,6 @@
             margin-right: 10px;
         }
 
-
         .sidebar ul li a {
             color: inherit;
             text-decoration: none;
@@ -109,7 +112,7 @@
         }
 
         ul li.active {
-        background-color: #ddd; /* Gaya latar belakang untuk item aktif */
+        background-color: #A8CFFB; /* Gaya latar belakang untuk item aktif */
         color: #000; /* Warna teks untuk item aktif */
         }
 
@@ -124,7 +127,7 @@
         .content h2 {
             background-color: #007bff;
             color: white;
-            padding: 20px;
+            padding: 10px;
             border-radius: 0px;
             margin-bottom: 0px;
         }
@@ -258,6 +261,11 @@
             /* Mengurangi padding horizontal antar ikon */
             margin: 0;
             /* Menghilangkan margin default */
+        }
+
+        .content .container th [style*="text-align: center;"] form {
+            display: inline-block;
+            /* Pastikan form diatur dalam satu baris */
         }
 
         /* .action-btn i {
@@ -403,89 +411,48 @@
                             <th>Penulis</th>
                             <th>Tahun Terbit</th>
                             <th>Kategori</th>
-                            <th>Jumlah</th>
                             <th style="text-align: center;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Laut Bercerita</td>
-                            <td>Leila S. Chudori</td>
-                            <td>2017</td>
-                            <td>Fiksi</td>
-                            <td>5</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
+                        <?php
+                        $no = 1;
+                        $query = $koneksi->prepare("SELECT judul, penulis, tahun_terbit, kategori FROM e_book");
+                        $query->execute();
+                        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($result as $row) { // Iterasi melalui hasil query
+                            echo "<tr>
+                            <td>{$no}</td>
+                            <td>{$row['judul']}</td>
+                            <td>{$row['penulis']}</td>
+                            <td>{$row['tahun_terbit']}</td>
+                            <td>{$row['kategori']}</td>
+                            <td style='text-align: center;'>
+                                <!-- Form untuk lihat data -->
+                                <form method='POST' action='lihat e-book.php' style='display:inline;'>
+                                    <input type='hidden' name='judul' value='{$row['judul']}' />
+                                    <button type='submit' class='action-btn'>
+                                        <i class='fas fa-eye'></i>
+                                    </button>
+                                </form>
+                                <!-- Form untuk hapus data -->
+                                <form method='POST' action='hapus_ebook.php' style='display:inline;'>
+                                    <input type='hidden' name='judul' value='{$row['judul']}' />
+                                    <button type='submit' class='action-btn' onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>
+                                        <i class='fas fa-trash-alt'></i>
+                                    </button>
+                                </form>
+                                <!-- Form untuk edit data -->
+                                <form method='POST' action='tambahebook.php' style='display:inline;'>
+                                    <input type='hidden' name='judul' value='{$row['judul']}' />
+                                    <button type='submit' class='action-btn'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                </form>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Resign</td>
-                            <td>Almira Bastari</td>
-                            <td>2018</td>
-                            <td>Fiksi</td>
-                            <td>6</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Filosofi Teras</td>
-                            <td>Henry Manurung</td>
-                            <td>2018</td>
-                            <td>Filsafat</td>
-                            <td>8</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Serangkai</td>
-                            <td>Valerie Patkar</td>
-                            <td>2021</td>
-                            <td>Romance</td>
-                            <td>10</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Orang Gagal</td>
-                            <td>Osamu Dazai</td>
-                            <td>2020</td>
-                            <td>Fiksi</td>
-                            <td>8</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Kupikir Segalanya Akan Beres...</td>
-                            <td>Kim Haemam & Park</td>
-                            <td>2021</td>
-                            <td>Self-Improvement</td>
-                            <td>6</td>
-                            <td class="actions">
-                                <button><i class="fas fa-eye"></i></button>
-                                <button><i class="fas fa-edit"></i></button>
-                                <button><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        </tr>";
+                            $no++; // Increment nomor
+                        }?>
                     </tbody>
                 </table>
                 <div class="pagination">
