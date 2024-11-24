@@ -3,6 +3,15 @@ require_once 'koneksi2.php';
 $db = new Database  ();
 $koneksi = $db->koneksi; // Inisialisasi koneksi dari objek Database
 ?>
+
+<?php if (isset($_GET['message'])): ?>
+    <?php if ($_GET['message'] == 'success'): ?>
+        <p style="color: green;">Data e-book berhasil dihapus.</p>
+    <?php elseif ($_GET['message'] == 'error'): ?>
+        <p style="color: red;">Data e-book gagal dihapus.</p>
+    <?php endif; ?>
+<?php endif; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -396,6 +405,9 @@ $koneksi = $db->koneksi; // Inisialisasi koneksi dari objek Database
                 <div class="top-container">
                     <!-- Tombol Tambah Data di kiri -->
                     <button class="btn-tambah"><i class="fas fa-plus"></i> TAMBAH DATA</button>
+                    <form method="POST" action="tambahebook.php" style="display:none;" id="form-tambah">
+                        
+                    </form>
 
                     <!-- Kolom Pencarian di Kanan -->
                     <div class="search-container">

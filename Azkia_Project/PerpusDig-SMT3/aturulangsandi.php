@@ -1,3 +1,56 @@
+<?php
+// Koneksi ke database (sesuaikan dengan kredensial Anda)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "perpusdig";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Memeriksa koneksi
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Menyimpan pesan feedback
+$feedbackMessage = "";
+
+// Jika formulir disubmit
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Mendapatkan input dari formulir
+    $newPassword = $_POST['newPassword'];
+    $confirmPassword = $_POST['confirmPassword'];
+
+    // Validasi input
+    if (empty($newPassword) || empty($confirmPassword)) {
+        $feedbackMessage = "Harap isi kedua kolom kata sandi.";
+    } elseif ($newPassword !== $confirmPassword) {
+        $feedbackMessage = "Kata sandi tidak cocok. Silakan coba lagi.";
+    } else {
+        // Hash password sebelum menyimpan ke database
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        // Asumsi Anda memiliki variabel $userId yang berisi ID pengguna yang sedang login
+        // Ganti dengan ID pengguna yang valid atau gunakan session
+        $userId = 1; // Ganti sesuai dengan ID pengguna yang valid
+
+        // Query untuk mengupdate kata sandi
+        $sql = "UPDATE user SET password='$hashedPassword' WHERE id=$userId";
+
+        if ($conn->query($sql) === TRUE) {
+            $feedbackMessage = "Kata sandi berhasil disimpan!";
+            header("Location: login.php"); // Redirect ke halaman login setelah berhasil
+            exit();
+        } else {
+            $feedbackMessage = "Terjadi kesalahan saat menyimpan kata sandi: " . $conn->error;
+        }
+    }
+}
+
+// Menutup koneksi
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -171,6 +224,7 @@
         /* Efek label saat input diisi atau fokus */
         input[type="password"]:focus ~ label, input[type="text"]:focus ~ label,
         input[type="password"]:valid ~ label, input[type="text"]:valid ~ label {
+            padding: 1rem 0.8rem 1rem 0.8rem;  /* Menambahkan padding untuk ruang label */
             top: -10px; /* Menempatkan label tepat di atas border input */
             left: 10px; /* Menjaga jarak kiri agar tidak terlalu dekat dengan border */
             font-size: 12px; /* Mengurangi ukuran font label */
@@ -183,9 +237,9 @@
         /* Menambahkan gaya untuk input yang kosong dan label di bawah */
         input[type="password"]:not(:focus):not(:valid) ~ label,
         input[type="text"]:not(:focus):not(:valid) ~ label {
-            top: 50%; /* Menjaga posisi label di tengah saat input kosong */
-            left: 12px; /* Menjaga label tetap dekat dengan input */
-            font-size: 16px; /* Ukuran font asli */
+            top: -1px; /* Menjaga posisi label di tengah saat input kosong */
+            left: 10px; /* Menjaga label tetap dekat dengan input */
+            font-size: 0.8rem; /* Ukuran font asli */
             color: #999; /* Mengubah warna label saat input kosong */
             transform: translateY(-50%); /* Menjaga label berada di tengah secara vertikal */
         }
@@ -208,7 +262,7 @@
 
         input[type="password"]:focus ~ label, input[type="text"]:focus ~ label,
         input[type="password"]:valid ~ label, input[type="text"]:valid ~ label {
-            animation: labelMove 0.3s ease forwards;
+            animation: all 0.3s ease;
         }
 
         .feedback-message {
@@ -276,26 +330,28 @@
                 <a href="#" class="back-link">&lt; Kembali</a>
                 <h2>Atur Ulang Kata Sandi</h2>
                 <p>Kata sandi Anda sebelumnya telah diatur ulang. Silakan masukkan kata sandi baru untuk akun Anda</p>
-                <form id="resetForm">
+                <form id="resetForm" action="aturulangsandi.php" method="POST">
                     <!-- Input untuk kata sandi baru -->
                     <div class="input-group">
-                        <input type="password" id="newPassword" placeholder=" " required>
+                        <input type="password" id="newPassword" name="newPassword" placeholder=" " required>
                         <label for="newPassword">Kata Sandi Baru</label>
                         <span class="toggle-password" onclick="togglePassword('newPassword')">&#128065;</span>
                     </div>
 
                     <!-- Input untuk konfirmasi kata sandi -->
                     <div class="input-group">
-                        <input type="password" id="confirmPassword" placeholder=" " required>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required>
                         <label for="confirmPassword">Konfirmasi Kata Sandi</label>
                         <span class="toggle-password" onclick="togglePassword('confirmPassword')">&#128065;</span>
                     </div>
 
                     <!-- Tombol untuk menyimpan kata sandi -->
-                    <button type="button" onclick="savePassword()">Simpan</button>
+                    <button type="submit">Simpan</button>
                     
                     <!-- Tempat untuk menampilkan pesan feedback -->
-                    <div id="feedbackMessage" class="feedback-message"></div>
+                    <div id="feedbackMessage" class="feedback-message">
+                        <?php if (isset($feedbackMessage)) echo $feedbackMessage; ?>
+                    </div>
                 </form>
             </div>
             <div class="image-box">

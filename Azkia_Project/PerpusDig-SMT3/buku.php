@@ -432,7 +432,7 @@ $koneksi = $db->koneksi; // Inisialisasi koneksi dari objek Database
                                     </button>
                                 </form>
                                 <!-- Form untuk hapus data -->
-                                <form method='POST' action='hapus_ebook.php' style='display:inline;'>
+                                <form method='POST' action='hapus_buku.php' style='display:inline;'>
                                     <input type='hidden' name='judul' value='{$row['judul_buku']}' />
                                     <button type='submit' class='action-btn' onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>
                                         <i class='fas fa-trash-alt'></i>

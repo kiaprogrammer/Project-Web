@@ -475,13 +475,13 @@
                 <h2>Tambah Data</h2>
                 <a href="dashboard_super.php">Beranda</a> / <a href="buku.php">Data Buku</a> / Tambah Data E-Book
             </div>
-            <form>
+            <form action="upload_ebook.php" method="POST" enctype="multipart/form-data">
                 <div class="form-container">
                     <div class="top-form-container">
                         <label for="file-upload" class="btn-upload">
                             <i class="fas fa-upload"></i> Unggah E - Book
                         </label>
-                        <input type="file" id="file-upload" style="display: none;">
+                        <input type="file" id="file-upload" name="file-upload" style="display: none;">
                         <div id="file-info" class="file-info">
                             <span id="file-name">No file selected</span> |
                             <span id="file-size">0 KB</span>
@@ -491,32 +491,32 @@
                         <div class="form-group-left">
                             <div class="from-judul">
                                 <label for="judul">Judul</label>
-                                <input type="text" id="judul" placeholder="Masukkan Judul Buku">
+                                <input type="text" id="judul" name="judul" placeholder="Masukkan Judul Buku">
                             </div>
                             <div class="from-pengarang">
-                                <label for="pengarang">Pengarang</label>
-                                <input type="text" id="pengarang" placeholder="Masukkan Nama Pengarang">
+                                <label for="penulis">Pengarang</label>
+                                <input type="text" id="penulis" name="penulis" placeholder="Masukkan Nama Pengarang">
                             </div>
                             <div class="form-terbit">
                                 <div class="form-field">
                                     <label for="penerbit">Penerbit</label>
-                                    <input type="text" id="penerbit" placeholder="Nama Penerbit">
+                                    <input type="text" id="penerbit" name="penerbit" placeholder="Nama Penerbit">
                                 </div>
                                 <div class="form-field">
                                     <label for="tahun">Tahun Terbit</label>
-                                    <input type="text" id="tahun" placeholder="Tahun Terbit" pattern="\d{4}" title="Masukkan tahun dalam format 4 digit, misalnya: 2023">
+                                    <input type="text" id="tahun" name="tahun_terbit" placeholder="Tahun Terbit" pattern="\d{4}" title="Masukkan tahun dalam format 4 digit, misalnya: 2023">
                                 </div>
                             </div>
                             <div class="from-deskripsi">
                                 <label for="sinopsis">Deskripsi E - Book</label>
-                                <textarea id="sinopsis" placeholder="Masukkan deskripsi E - Book"></textarea>
+                                <textarea id="sinopsis" name="sinopsis" placeholder="Masukkan deskripsi E - Book"></textarea>
                                 <div class="char-counter" id="char-counter">0/500</div>
                             </div>
                         </div>
                         <div class="form-group-right">
                             <div class="from-kategori">
                                 <label for="kategori">Kategori</label>
-                                <select id="kategori">
+                                <select id="kategori" name="kategori">
                                     <option value="kategori1">Kategori 1</option>
                                     <option value="kategori2">Kategori 2</option>
                                     <option value="kategori3">Kategori 3</option>
@@ -534,7 +534,7 @@
                                     <span id="cover-name">No cover selected</span> |
                                     <span id="cover-size">0 KB</span>
                                 </div>
-                                <input type="file" id="cover-file" accept="image/*" style="display: none;">
+                                <input type="file" id="cover-file" name="cover-file" accept="image/*" style="display: none;">
                             </div>
                             <div class="form-actions">
                                 <button type="button" class="btn-cancel">Batal</button>
