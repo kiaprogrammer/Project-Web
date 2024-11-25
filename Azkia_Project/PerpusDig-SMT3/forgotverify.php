@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -220,22 +221,33 @@
         </div>
     </div>
     <script>
-        document.getElementById('resend-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            
-            fetch('resend_otp.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: ''
-            })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
+        $(document).ready(function () {
+            $("#verifyButton").click(function (e) {
+                e.preventDefault();
+
+                const otp = $("#otp").val();
+                if (!otp) {
+                    $("#message").html("<p class='error'>Kode OTP tidak boleh kosong.</p>");
+                    return;
+                }
+
+                $("#message").html("<p class='loading'>Memproses...</p>");
+                $.ajax({
+                    type: "POST",
+                    url: "forgotverify.php",
+                    data: { otp_code: otp },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            window.location.href = 'resetpassword.php'; // Arahkan ke halaman reset password
+                        } else {
+                            $("#message").html("<p class='error'>" + response.message + "</p>");
+                        }
+                    },
+                    error: function () {
+                        $("#message").html("<p class='error'>Terjadi kesalahan. Silakan coba lagi nanti.</p>");
+                    }
+                });
             });
         });
     </script>

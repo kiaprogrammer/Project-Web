@@ -327,7 +327,7 @@ $conn->close();
         </div>
         <div class="form-container">
             <div class="form-box">
-                <a href="#" class="back-link">&lt; Kembali</a>
+                <a href="forgotverify.php" class="back-link">&lt; Kembali</a>
                 <h2>Atur Ulang Kata Sandi</h2>
                 <p>Kata sandi Anda sebelumnya telah diatur ulang. Silakan masukkan kata sandi baru untuk akun Anda</p>
                 <form id="resetForm" action="aturulangsandi.php" method="POST">

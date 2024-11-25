@@ -1,28 +1,3 @@
-<?php
-session_start(); // Pastikan session dimulai
-
-// Mengatur pesan sesuai dengan kondisi (misalnya, jika form telah disubmit)
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-
-    // Cek apakah email ada di database
-    include 'koneksi2.php'; // File untuk koneksi database
-    $query = $conn->prepare("SELECT * FROM user WHERE email_user = ?");
-    $query->bind_param("s", $email);
-    $query->execute();
-    $result = $query->get_result();
-
-    if ($result->num_rows > 0) {
-        // Simpan pesan sukses di session
-        $_SESSION['message'] = "Kode OTP telah dikirim ke email Anda.";
-    } else {
-        // Simpan pesan gagal di session
-        $_SESSION['message'] = "Email tidak ditemukan.";
-    }
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -288,7 +263,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <form id="resetForm">
                 <div class="user-box">
-                    <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
+                    <input type="email" id="email" name="email_user" placeholder="Masukkan email Anda" required>
                     <label for="email">Email</label>
                 </div>
                 <button type="button" id="nextButton">Selanjutnya</button>
