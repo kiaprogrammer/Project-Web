@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $email = $_POST['email'] ?? null;
+
+    if (empty($email)) {
+        echo "<script>
+            alert('Email wajib di isi!');
+            window.history.back();
+        </script>";
+        exit();
+    }
+
+    // Simpan email ke session
+    $_SESSION['email'] = $email;
+    
+    //redirect ke halaman OTP
+    header("location: forgotverify.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -250,74 +273,73 @@
     </style>
     </head>
     <body>
-    <div class="container">
-        <div class="form-container">
-            <div class="logo-container">
-                <img src="assets/logo perpusdig.png" alt="PerpusDig Logo" class="logo">
-                <span class="perpus">Perpus</span><span class="dig">Dig</span>
-            </div>
-            <div class="header-container">
-            <a href="login.php" class="back-link">&lt; Kembali</a>
-                <h2>Perbarui Kata Sandi</h2>
-                <p>Jangan khawatir. Masukkan email Anda di bawah ini untuk memulihkan kata sandi Anda</p>
-            </div>
-            <form id="resetForm">
-                <div class="user-box">
-                    <input type="email" id="email" name="email_user" placeholder="Masukkan email Anda" required>
-                    <label for="email">Email</label>
+        <div class="container">
+            <div class="form-container">
+                <div class="logo-container">
+                    <img src="assets/logo perpusdig.png" alt="PerpusDig Logo" class="logo">
+                    <span class="perpus">Perpus</span><span class="dig">Dig</span>
                 </div>
-                <button type="button" id="nextButton">Selanjutnya</button>
-            </form>
-            <!-- Menampilkan pesan berdasarkan status -->
-            <?php if (isset($_SESSION['message'])): ?>
-                <div id="message" class="<?= strpos($_SESSION['message'], 'tidak ditemukan') !== false ? 'error' : 'success' ?>">
-                    <?= $_SESSION['message'] ?>
+                <div class="header-container">
+                    <a href="login.php" class="back-link">&lt; Kembali</a>
+                    <h2>Perbarui Kata Sandi</h2>
+                    <p>Jangan khawatir. Masukkan email Anda di bawah ini untuk memulihkan kata sandi Anda</p>
                 </div>
-                <?php unset($_SESSION['message']); // Menghapus pesan setelah ditampilkan ?>
-            <?php endif; ?>
+                <form id="resetForm" method="post" action="lupakatasandi.php">
+                    <div class="user-box">
+                        <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <button type="submit" id="nextButton">Selanjutnya</button>
+                </form>
+                <!-- Menampilkan pesan berdasarkan status -->
+                <?php if (isset($_SESSION['message'])): ?>
+                    <div id="message" class="<?= strpos($_SESSION['message'], 'tidak ditemukan') !== false ? 'error' : 'success' ?>">
+                        <?= $_SESSION['message'] ?>
+                    </div>
+                    <?php unset($_SESSION['message']); // Menghapus pesan setelah ditampilkan ?>
+                <?php endif; ?>
+            </div>
+            <div class="image-container">
+                <img src="assets/password.png" alt="Forgot Password" weight="400">
+            </div>
         </div>
-        <div class="image-container">
-            <img src="assets/password.png" alt="Forgot Password" weight="400">
-        </div>
-    </div>
-    <script>
-        $(document).ready(function() {
-            $("#resetForm").on("submit", function(e) {
-                e.preventDefault();
+        <script>
+            $(document).ready(function() {
+                $("#resetForm").on("submit", function(e) {
+                    e.preventDefault();
 
-                const email = $("#email").val();
-                if (!validateEmail(email)) {
-                    $("#message").html("<p class='error'>Masukkan email yang valid.</p>");
-                    return;
-                }
-
-                $("#message").html("<p class='loading'>Memproses...</p>");
-                $.ajax({
-                    type: "POST",
-                    url: "lupakatasandi.php",
-                    data: { email_user: email }, // pastikan parameter sesuai
-                    dataType: "json",
-                    success: function(response) {
-                        if (response.status === "success") {
-                            // Jika email cocok, periksa flag "redirect"
-                            if (response.redirect) {
-                                window.location.href = 'forgotverify.php'; // Arahkan ke halaman verifikasi
-                            }
-                        } else {
-                            $("#message").html("<p class='error'>" + response.message + "</p>");
-                        }
-                    },
-                    error: function() {
-                        $("#message").html("<p class='error'>Terjadi kesalahan. Silakan coba lagi nanti.</p>");
+                    const email = $("#email").val();
+                    if (!validateEmail(email)) {
+                        $("#message").html("<p class='error'>Masukkan email yang valid.</p>");
+                        return;
                     }
-                });
-            });
 
-            function validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(String(email).toLowerCase());
-            }
-        });
-    </script>
+                    $("#message").html("<p class='loading'>Memproses...</p>");
+                    $.ajax({
+                        type: "POST",
+                        url: "lupakatasandi.php",
+                        data: { email_user: email }, // pastikan parameter sesuai
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status === "success") {
+                                if (response.redirect) {
+                                    window.location.href = 'forgotverify.php';
+                                }
+                            } else {
+                                $("#message").html("<p class='error'>" + response.message + "</p>");
+                            }
+                        },
+                        error: function() {
+                            $("#message").html("<p class='error'>Terjadi kesalahan. Silakan coba lagi nanti.</p>");
+                        }
+                    });
+                });
+
+                function validateEmail(email) {
+                    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return re.test(String(email).toLowerCase());
+                }
+            });
+        </script>
 </body>
 </html>

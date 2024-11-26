@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+// Cek apakah form verifikasi telah dikirim
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_SESSION['otp'])) {
+        $inputOtp = $_POST['otp1'] . $_POST['otp2'] . $_POST['otp3'] . $_POST['otp4'];  // Menggabungkan input OTP
+
+        // Cek apakah OTP yang dimasukkan sesuai dengan OTP yang ada di session
+        if ($inputOtp == $_SESSION['otp']) {
+            // OTP benar, arahkan ke halaman reset password
+            header("Location: aturulangsandi.php");
+            exit();
+        } else {
+            // OTP salah
+            $_SESSION['message'] = 'OTP yang Anda masukkan salah.';
+        }
+    } else {
+        // Session OTP tidak ada
+        $_SESSION['message'] = 'Terjadi kesalahan, OTP tidak ditemukan.';
+    }
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -213,7 +237,11 @@
                     <p class="resend-message">Tidak menerima kode? <a href="#" class="resend-link">Kirim ulang</a></p>
                     <button type="submit" class="btn">Verifikasi</button>
                 </form>
-            </div>
+                <?php if (isset($_SESSION['message'])): ?>
+                    <div class="error"><?= $_SESSION['message']; ?></div>
+                            <?php unset($_SESSION['message']); ?>
+                        <?php endif; ?>
+                    </div>
         </div>
 
         <div class="left-container">
@@ -239,7 +267,7 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                            window.location.href = 'resetpassword.php'; // Arahkan ke halaman reset password
+                            window.location.href = 'aturulangsandi.php'; // Arahkan ke halaman reset password
                         } else {
                             $("#message").html("<p class='error'>" + response.message + "</p>");
                         }

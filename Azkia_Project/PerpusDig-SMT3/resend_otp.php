@@ -1,14 +1,12 @@
 <?php
 require_once 'koneksi2.php';
-$db = new Database  ();
-$koneksi = $db->koneksi; // Inisialisasi koneksi dari objek Database
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_SESSION['email'];
 
     // Cek apakah email ada di database
-    $query = $conn->prepare("SELECT * FROM user WHERE email = ?");
+    $query = $conn->prepare("SELECT * FROM admin WHERE email = ?");
     $query->bind_param("s", $email);
     $query->execute();
     $result = $query->get_result();

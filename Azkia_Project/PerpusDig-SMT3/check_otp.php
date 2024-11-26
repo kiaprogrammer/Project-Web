@@ -1,30 +1,17 @@
 <?php
-require_once 'koneksi2.php';
-$db = new Database  ();
-$koneksi = $db->koneksi; // Inisialisasi koneksi dari objek Database
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $otp = $_POST['otp1'] . $_POST['otp2'] . $_POST['otp3'] . $_POST['otp4'] . $_POST['otp5'] . $_POST['otp6'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $otp_input = $_POST['otp1'] . $_POST['otp2'] . $_POST['otp3'] . $_POST['otp4'];
 
-    // Cek apakah OTP valid dan belum expired
-    $query = $conn->prepare("SELECT * FROM password_resets WHERE otp = ? AND expiry > NOW()");
-    $query->bind_param("s", $otp);
-    $query->execute();
-    $result = $query->get_result();
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $email = $row['email'];
-
-        // Simpan email di sesi untuk digunakan di formulir update password
-        $_SESSION['email'] = $email;
-
-        // Redirect ke halaman update password
-        header("Location: aturulangsandi.php");
+    if ($otp_input == $_SESSION['otp']) {
+        $_SESSION['message'] = "Kode OTP berhasil diverifikasi. Silakan perbarui kata sandi Anda.";
+        header("Location: update_password.php");
         exit();
     } else {
-        echo "Kode OTP tidak valid atau telah expired.";
+        $_SESSION['message'] = "Kode OTP salah. Silakan coba lagi.";
+        header("Location: forgotverify.php");
+        exit();
     }
 }
 ?>
