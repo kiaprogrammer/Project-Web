@@ -284,7 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                     <h2>Perbarui Kata Sandi</h2>
                     <p>Jangan khawatir. Masukkan email Anda di bawah ini untuk memulihkan kata sandi Anda</p>
                 </div>
-                <form id="resetForm" method="post" action="lupakatasandi.php">
+                <form id="resetForm" method="POST" action="lupakatasandi.php">
                     <div class="user-box">
                         <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
                         <label for="email">Email</label>
