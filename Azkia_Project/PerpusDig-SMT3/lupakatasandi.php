@@ -1,24 +1,5 @@
 <?php
 session_start();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $email = $_POST['email'] ?? null;
-
-    if (empty($email)) {
-        echo "<script>
-            alert('Email wajib di isi!');
-            window.history.back();
-        </script>";
-        exit();
-    }
-
-    // Simpan email ke session
-    $_SESSION['email'] = $email;
-    
-    //redirect ke halaman OTP
-    header("location: forgotverify.php");
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -207,6 +188,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             background-color: #0056b3;
         }
 
+        /* Modal - Background */
+        .modal {
+            display: none;  /* Modal disembunyikan secara default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4); /* Transparan di belakang modal */
+        }
+
+        /* Modal Konten */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Tombol Tutup (X) */
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Pesan sukses */
+        .success-message {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Pesan error */
+        .error-message {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
         .message {
             font-family: 'Arial', sans-serif;  /* Menggunakan font yang lebih elegan */
             text-align: center;               /* Menempatkan teks di tengah */
@@ -284,13 +324,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                     <h2>Perbarui Kata Sandi</h2>
                     <p>Jangan khawatir. Masukkan email Anda di bawah ini untuk memulihkan kata sandi Anda</p>
                 </div>
-                <form id="resetForm" method="POST" action="lupakatasandi.php">
+
+                <!-- Tempatkan pesan status di sini -->
+                <?php if (isset($_SESSION['message'])): ?>
+                    <div id="message" class="<?= strpos($_SESSION['message'], 'tidak ditemukan') !== false ? 'error' : 'success' ?>">
+                        <?= $_SESSION['message'] ?>
+                    </div>
+                    <?php unset($_SESSION['message']); // Menghapus pesan setelah ditampilkan ?>
+                <?php endif; ?>
+                
+                <form id="resetForm" method="POST" action="send_email.php">
                     <div class="user-box">
-                        <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
+                        <input type="email" id="email" name="email_user" placeholder="Masukkan email Anda" required>
                         <label for="email">Email</label>
                     </div>
                     <button type="submit" id="nextButton">Selanjutnya</button>
                 </form>
+                <!-- Modal untuk pesan sukses atau gagal -->
+                <div id="statusModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <p id="modalMessage"></p>
+                    </div>
+                </div>
                 <!-- Menampilkan pesan berdasarkan status -->
                 <?php if (isset($_SESSION['message'])): ?>
                     <div id="message" class="<?= strpos($_SESSION['message'], 'tidak ditemukan') !== false ? 'error' : 'success' ?>">
@@ -304,42 +360,66 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </div>
         </div>
         <script>
-            $(document).ready(function() {
-                $("#resetForm").on("submit", function(e) {
-                    e.preventDefault();
+        $(document).ready(function () {
+            $("#resetForm").on("submit", function (e) {
+                e.preventDefault();
 
-                    const email = $("#email").val();
-                    if (!validateEmail(email)) {
-                        $("#message").html("<p class='error'>Masukkan email yang valid.</p>");
-                        return;
-                    }
+                const email = $("#email").val();
 
-                    $("#message").html("<p class='loading'>Memproses...</p>");
-                    $.ajax({
-                        type: "POST",
-                        url: "lupakatasandi.php",
-                        data: { email_user: email }, // pastikan parameter sesuai
-                        dataType: "json",
-                        success: function(response) {
-                            if (response.status === "success") {
+                if (!validateEmail(email)) {
+                    showModal("error", "Masukkan email yang valid.");
+                    return;
+                }
+
+                showModal("loading", "Memproses...");
+
+                $.ajax({
+                    type: "POST",
+                    url: "lupakatasandi.php",
+                    data: { email_user: email },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            showModal("success", response.message);
+                            setTimeout(function () {
                                 if (response.redirect) {
-                                    window.location.href = 'forgotverify.php';
+                                    window.location.href = "forgotverify.php";
                                 }
-                            } else {
-                                $("#message").html("<p class='error'>" + response.message + "</p>");
-                            }
-                        },
-                        error: function() {
-                            $("#message").html("<p class='error'>Terjadi kesalahan. Silakan coba lagi nanti.</p>");
+                            }, 2000);
+                        } else {
+                            showModal("error", response.message);
                         }
-                    });
+                    },
+                    error: function () {
+                        showModal("error", "Terjadi kesalahan. Silakan coba lagi.");
+                    }
+                });
+            });
+
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            }
+
+            function showModal(type, message) {
+                const modal = $("#statusModal");
+                const modalMessage = $("#modalMessage");
+
+                modalMessage.removeClass().addClass(type + "-message");
+                modalMessage.html(message);
+                modal.show();
+
+                $(".close").click(function () {
+                    modal.hide();
                 });
 
-                function validateEmail(email) {
-                    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    return re.test(String(email).toLowerCase());
-                }
-            });
+                $(window).click(function (event) {
+                    if (event.target === modal[0]) {
+                        modal.hide();
+                    }
+                });
+            }
+        });
         </script>
 </body>
 </html>

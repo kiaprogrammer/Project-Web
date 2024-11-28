@@ -1,27 +1,24 @@
 <?php
 session_start();
 
-// Cek apakah form verifikasi telah dikirim
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_SESSION['otp'])) {
-        $inputOtp = $_POST['otp1'] . $_POST['otp2'] . $_POST['otp3'] . $_POST['otp4'];  // Menggabungkan input OTP
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Menggabungkan 4 input OTP
+    $input_otp = $_POST['otp1'] . $_POST['otp2'] . $_POST['otp3'] . $_POST['otp4'];
 
-        // Cek apakah OTP yang dimasukkan sesuai dengan OTP yang ada di session
-        if ($inputOtp == $_SESSION['otp']) {
-            // OTP benar, arahkan ke halaman reset password
-            header("Location: aturulangsandi.php");
-            exit();
-        } else {
-            // OTP salah
-            $_SESSION['message'] = 'OTP yang Anda masukkan salah.';
-        }
+    // Periksa apakah OTP yang dimasukkan sesuai dengan OTP yang ada di session
+    if ($input_otp == $_SESSION['otp']) {
+        // Jika OTP benar, arahkan ke halaman reset password
+        header("Location: aturulangsandi.php");
+        exit();
     } else {
-        // Session OTP tidak ada
-        $_SESSION['message'] = 'Terjadi kesalahan, OTP tidak ditemukan.';
+        // Jika OTP salah
+        $_SESSION['message'] = "Kode OTP salah. Silakan coba lagi.";
+        header("Location: forgotverify.php");
+        exit();
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -208,6 +205,77 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     .btn:hover {
         background-color: #0056b3;
     }
+
+    .error {
+        padding: 10px;
+        margin: 20px 0;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .error a {
+        color: #721c24;
+        text-decoration: underline;
+    }
+
+    .error a:hover {
+        color: #f44336;
+    }
+
+    .modal {
+        display: none; /* Modal disembunyikan secara default */
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 5px;
+        width: 50%;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover, .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .success-message {
+        color: green;
+    }
+
+    .error-message {
+        color: red;
+    }
+
+    .loading-message {
+        color: blue;
+    }
+
+
     </style>
 </head>
 <body>
@@ -227,14 +295,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h2><span>Verifikasi</span> <span>Kode</span></h2>
                 <p class="welcome-message">Kode otentikasi telah dikirim ke email Anda</p>
 
-                <form action="check_otp.php" method="post">
+                <form id="otpForm" method="POST" action="verify_otp.php">
                     <div class="code-input-wrapper">
                         <input type="text" maxlength="1" class="code-input" name="otp1" required>
                         <input type="text" maxlength="1" class="code-input" name="otp2" required>
                         <input type="text" maxlength="1" class="code-input" name="otp3" required>
                         <input type="text" maxlength="1" class="code-input" name="otp4" required>
                     </div>
-                    <p class="resend-message">Tidak menerima kode? <a href="#" class="resend-link">Kirim ulang</a></p>
+                    <p class="resend-message">Tidak menerima kode? <a href="resend_otp.php" class="resend-link">Kirim ulang</a></p>
                     <button type="submit" class="btn">Verifikasi</button>
                 </form>
                 <?php if (isset($_SESSION['message'])): ?>
@@ -242,42 +310,85 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <?php unset($_SESSION['message']); ?>
                         <?php endif; ?>
                     </div>
-        </div>
-
+            </div>
         <div class="left-container">
             <img src="assets/icon login.png" alt="ikon people login" width="580px">
         </div>
+         <!-- Modal untuk status -->
+        <div id="statusModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p id="modalMessage"></p>
+            </div>
+        </div>
     </div>
     <script>
-        $(document).ready(function () {
-            $("#verifyButton").click(function (e) {
-                e.preventDefault();
+    function showModal(type, message) {
+        const modal = $("#statusModal");
+        const modalMessage = $("#modalMessage");
 
-                const otp = $("#otp").val();
-                if (!otp) {
-                    $("#message").html("<p class='error'>Kode OTP tidak boleh kosong.</p>");
-                    return;
-                }
+        // Tambahkan class dan pesan sesuai tipe
+        modalMessage.removeClass().addClass(type + '-message');
+        modalMessage.text(message);
 
-                $("#message").html("<p class='loading'>Memproses...</p>");
-                $.ajax({
-                    type: "POST",
-                    url: "forgotverify.php",
-                    data: { otp_code: otp },
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.status === "success") {
-                            window.location.href = 'aturulangsandi.php'; // Arahkan ke halaman reset password
-                        } else {
-                            $("#message").html("<p class='error'>" + response.message + "</p>");
-                        }
-                    },
-                    error: function () {
-                        $("#message").html("<p class='error'>Terjadi kesalahan. Silakan coba lagi nanti.</p>");
+        // Tampilkan modal
+        modal.show();
+
+        // Event untuk menutup modal
+        $(".close").click(function () {
+            modal.hide();
+        });
+
+        $(window).click(function (event) {
+            if (event.target === modal[0]) {
+                modal.hide();
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#verifyButton").click(function (e) {
+            e.preventDefault();
+
+            const otp = $("#otp").val();
+
+            // Validasi client-side: Pastikan kode OTP tidak kosong dan hanya angka
+            if (!otp) {
+                showModal('error', 'Kode OTP tidak boleh kosong.');
+                return;
+            }
+            if (!/^\d+$/.test(otp)) {
+                showModal('error', 'Kode OTP hanya boleh berupa angka.');
+                return;
+            }
+
+            showModal('loading', 'Memproses...');
+
+            // Kirim OTP ke server untuk diverifikasi
+            $.ajax({
+                type: "POST",
+                url: "verify_otp.php", // Pastikan file ini memproses verifikasi OTP
+                data: { otp_code: otp }, // Kirim OTP ke server
+                dataType: "json",
+                success: function (response) {
+                    if (response.status === "success") {
+                        // Jika OTP valid, tampilkan pesan sukses dan arahkan ke halaman berikutnya
+                        showModal('success', 'OTP berhasil diverifikasi! Mengarahkan ke halaman reset password...');
+                        setTimeout(function () {
+                            window.location.href = 'aturulangsandi.php';
+                        }, 2000); // Redirect setelah 2 detik
+                    } else {
+                        // Tampilkan pesan error dari server
+                        showModal('error', response.message);
                     }
-                });
+                },
+                error: function () {
+                    // Tangani error jaringan
+                    showModal('error', 'Terjadi kesalahan. Silakan coba lagi nanti.');
+                }
             });
         });
+    });
     </script>
 </body>
 </html>

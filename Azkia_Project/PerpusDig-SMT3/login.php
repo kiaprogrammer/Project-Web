@@ -1,3 +1,45 @@
+<?php
+session_start(); // Memulai sesi untuk menyimpan data pengguna
+
+// Memasukkan file koneksi
+include('koneksi2.php'); // Menyertakan koneksi database
+
+// Proses login jika form telah disubmit
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];           // Mengambil input email dari form
+    $password = $_POST['password'];     // Mengambil input password dari form
+
+    // Menghindari SQL Injection dengan prepared statement
+    $stmt = $koneksi->prepare("SELECT * FROM admin WHERE email = :email AND password = :password");
+    
+    // Mengikat parameter untuk query
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+    
+    // Menjalankan query
+    $stmt->execute();
+    
+    // Mengecek apakah ada data yang ditemukan
+    if ($stmt->rowCount() > 0) {
+        // Mengambil data pengguna
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Menyimpan data pengguna ke session
+        $_SESSION['user_id'] = $user['id'];    // Menyimpan ID pengguna
+        $_SESSION['user_email'] = $user['email']; // Menyimpan email pengguna
+
+        // Mengarahkan ke halaman dashboard jika login berhasil
+        header("Location: dashboard_super.php");
+        exit();
+    } else {
+        // Menampilkan pesan error jika login gagal
+        $error_message = "Email atau kata sandi salah.";
+    }
+}
+
+// Menutup koneksi PDO
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
